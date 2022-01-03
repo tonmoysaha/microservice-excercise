@@ -1,16 +1,7 @@
-package com.course.entity;
+package com.course.catalog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-
-@Entity
-@Table(name = "courses")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Course {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String courseName;
     private String authorName;
