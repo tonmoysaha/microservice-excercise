@@ -1,6 +1,10 @@
 package com.course.catalog.entity;
 
-public class Course {
+import com.google.inject.Exposed;
+
+import java.io.Serializable;
+
+public class Course implements Serializable {
 
     private Long id;
     private String courseName;
