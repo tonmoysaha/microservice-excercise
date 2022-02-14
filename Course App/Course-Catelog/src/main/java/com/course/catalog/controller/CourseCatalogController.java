@@ -1,6 +1,7 @@
 package com.course.catalog.controller;
 
 import com.course.catalog.entity.Course;
+import com.course.catalog.entity.User;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
@@ -64,8 +65,20 @@ public class CourseCatalogController {
         InstanceInfo nextServerFromEureka = eurekaClient.getNextServerFromEureka("course-app", false);
         String homePageUrl = nextServerFromEureka.getHomePageUrl();
         RestTemplate restTemplate = new RestTemplate();
-        Course forObject = restTemplate.getForObject(homePageUrl + 1, Course.class);
+        Course forObject = restTemplate.getForObject(homePageUrl + id, Course.class);
         return forObject;
+    }
+
+    @GetMapping("user/course/{id}")
+    public String getSpecificUserCourse(@PathVariable() Long id){
+        InstanceInfo nextServerFromEureka = eurekaClient.getNextServerFromEureka("course-app", false);
+        String homePageUrl = nextServerFromEureka.getHomePageUrl();
+        RestTemplate restTemplate = new RestTemplate();
+        Course course = restTemplate.getForObject(homePageUrl + id, Course.class);
+        InstanceInfo nextServerFromEureka1 = eurekaClient.getNextServerFromEureka("USER-SERVICE", false);
+        String userPageUrl = nextServerFromEureka1.getHomePageUrl();
+        String userList = restTemplate.getForObject(userPageUrl  + course.getId(), String.class);
+        return("Our first course is "+course.getCourseName() +"***** and Enrolled users are ***** "+ userList);
     }
 
     @DeleteMapping("/{id}")
